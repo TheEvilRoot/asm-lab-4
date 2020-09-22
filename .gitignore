@@ -1,0 +1,6 @@
+.DS_Store
+build/
+stderr.txt
+stdout.txt
+*.exe
+*.EXE
