@@ -43,6 +43,17 @@
 	messageGameOver db '    GAME  OVER    '
 	messageWin      db ' CONGRATULATIONS! '
 	messagePause    db '       PAUSE      '
+	
+	messagePauseTip    db ' Esc to exit. Enter to continue '
+	messagePauseColors db 07h
+	                   db 03 dup (0ch)
+	                   db 10 dup (07h)
+					   db 05 dup (0ah)
+					   db 12 dup (07h)
+					   db 07h
+	messagePauseTipLen dw 32
+	pauseTipX          db 24 
+	pauseTipY          db 15 
 
 .code
 
@@ -474,6 +485,26 @@ showAlert macro message, color
 	rep stosw	
 endm
 
+showPauseTip macro
+	local pauseTipLoop
+	mov dl, pauseTipX
+	mov dh, pauseTipY
+	call translateOffset
+	shl si, 1
+	mov di, si	
+	lea si, messagePauseTip
+	lea bx, messagePauseColors
+	mov cx, messagePauseTipLen
+	pauseTipLoop:
+		mov al, byte ptr ds:[si]
+		mov ah, byte ptr ds:[bx]
+		mov word ptr es:[di], ax
+		inc si
+		inc bx
+		add di, 2
+	loop pauseTipLoop
+endm
+
 drawScore:
 	mov si, 16
 	mov ax, winScore
@@ -628,6 +659,7 @@ game:
 		ret
 	gamePause:
 		showAlert messagePause, 10000111b
+		showPauseTip
 		gamePauseLoop:
 			mov ah, 00h
 			int 16h
@@ -659,7 +691,6 @@ start:
 	mov es, ax
 
 	call game	
-	
 exit:
 	; reset cursor
 	mov ax, 0100h
