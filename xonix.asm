@@ -40,7 +40,7 @@
 	playerPos    dw 00000000h
 	playerMovement db 1001011b
 
-	messageGameOver db '    GAME  OVER    '
+	messageGameOver db '     GAME OVER    '
 	messageWin      db ' CONGRATULATIONS! '
 	messagePause    db '       PAUSE      '
 	
