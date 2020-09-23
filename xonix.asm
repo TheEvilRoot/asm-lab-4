@@ -603,12 +603,10 @@ game:
 		gameSetMovement:
 		mov playerMovement, ah
 		
-		gameHandleUpdate:
-	  pusha	
+		gameHandleUpdate:	
 		call handleMove
 		call updateEnemies
 		call updateScore
-		popa 
 
 		mov ax, score
 		cmp ax, winScore
